@@ -1,7 +1,7 @@
 /* package yr_command_line;
  *
  * Programmer: Kun Deng
- * Date Created: ??/??/????
+ * Date Created: 07/20/2015
  *
  * Purpose: Prints out the Federal Withholding Tax, Illinois
  * Withholding Tax, Social Security Tax, and Medicare Tax
@@ -14,177 +14,190 @@ import java.util.Scanner;
 
 public class PayrollCalculator
 {
+	public PayrollCalculator()
+	{
 
-    public PayrollCalculator()
-    {
+	}
+	public PayrollCalculator(double hoursFromMain)
+    	{
+	        hours = hoursFromMain;
+    	}
 
-    }
-    public PayrollCalculator(double hoursFromMain)
-    {
-        hours = hoursFromMain;
-    }
+	//My pay rate	
+    	final static double PAY_RATE = 9.25;
+   	private static double hours;
+	private static double grossPay;
+   	private static double netPay;
+   	private static double fedTax;
+   	private static double stateTax;
+   	private static double socialSecurityTax;
+   	private static double medicareTax;
+   	private static double totalTax;
 
-    final static double PAY_RATE = 9.25;
-    private static double hours;
-    private static double grossPay;
-    private static double netPay;
-    private static double fedTax;
-    private static double stateTax;
-    private static double socialSecurityTax;
-    private static double medicareTax;
-    private static double totalTax;
+    	public static void setHours(double hoursFromMain)
+    	{
+        	hours = hoursFromMain;
+    	}
+    	public static void setGrossPay()
+    	{
+		//Multiplying by hundred then dividng the rounded
+		//number product by 100 to get a number in the
+		//hundreths place
+        	grossPay = Math.round(hours * PAY_RATE * 100)/100.0;
+    	}
+    	public static void setFedTax()
+    	{
+        	if (grossPay < 87) //Changed ceilling from 86.5 to 87
+        	{
+            		fedTax = 0;
+        	}
+        	else if (grossPay >= 87 && grossPay <= 443) //Changed floor from 86.5 to 87
+        	{
+			//Using the floor method instead of the round method
+			//the government does not round up
+            		fedTax = Math.floor((grossPay - 86.65) * .10 * 100)/100.0;
+        	}	
+        	else if (grossPay >= 443 && grossPay <= 1529) //Changed ceilling from 1529 to 1535
+        	{
+			//Changed deduction from 35.50 to 205.46 and changed 
+			//percentage from 10 percent to 15 percent
+			fedTax = Math.floor((grossPay - 205.46) * .15 * 100)/100.0;
+        	}
+   	 }	
+    	public static void setStateTax()
+    	{
+        	stateTax = Math.round(grossPay * .0375 * 100)/100.0;
+   	}	
+   	public static void setSocialSecurityTax()
+	{	
+		//The amount of hours is a rough estimate
+		//With more practice I might find the right
+		//amount of hours. Even then changes in tax
+		//in years might make things innaccurate
+        	//Update: Turns out only the federal government
+		//rounds down, the other taxes round up
+		if (hours >= 26)
+        	{
+            		socialSecurityTax = Math.round((grossPay * .062) * 100)/100.0;
+        	}
+        	else
+            		socialSecurityTax = 0;
+    	}	
+    	public static void setMedicareTax()
+    	{
+		
+        	if (hours >= 26)
+        	{
+            		medicareTax = Math.round((grossPay * .0145) * 100)/100.0;
+        	}
+        	else
+            		medicareTax = 0;
+    	}	
+    	public static void setTotalTax()
+    	{
+        	totalTax = (fedTax + stateTax + socialSecurityTax + medicareTax);
+    	}
 
-    public static void setHours(double hoursFromMain)
-    {
-        hours = hoursFromMain;
-    }
-    public static void setGrossPay()
-    {
-        grossPay = Math.round(hours * PAY_RATE * 100)/100.0;
-    }
-    public static void setFedTax()
-    {
-        if (grossPay < 86.5)
-        {
-            fedTax = 0;
-        }
-        else if (grossPay >= 86.5 && grossPay <= 443)
-        {
-            fedTax = Math.round((grossPay - 86.50) * .10 * 100)/100.0;
-        }
-        else if (grossPay >= 443 && grossPay <= 1529)
-        {
-            fedTax = Math.round((grossPay - 35.50) * .15 * 100)/100.0;
-        }
-    }
-    public static void setStateTax()
-    {
-        stateTax = Math.round(grossPay * .0375 * 100)/100.0;
-    }
-    public static void setSocialSecurityTax()
-    {
-        if (hours >= 26)
-        {
-            socialSecurityTax = Math.round((grossPay * .062) * 100)/100.0;
-        }
-        else
-            socialSecurityTax = 0;
-    }
-    public static void setMedicareTax()
-    {
-        if (hours >= 26)
-        {
-            medicareTax = Math.round((grossPay * .0145) * 100)/100.0;
-        }
-        else
-            medicareTax = 0;
-    }
-    public static void setTotalTax()
-    {
-        totalTax = (fedTax + stateTax + socialSecurityTax + medicareTax);
-    }
+    	public static void setNetPay()
+    	{
+        	netPay = (grossPay - totalTax);
+    	}
 
-    public static void setNetPay()
-    {
-        netPay = (grossPay - fedTax - stateTax - socialSecurityTax - medicareTax);
-    }
+    	public static double getHours()
+    	{
+        	return hours;
+    	}
+    	public static double getGrossPay()
+    	{
+        	return grossPay;
+    	}
+    	public static double getFedTax()
+    	{
+        	return fedTax;
+    	}
+    	public static double getStateTax()
+    	{
+        	return stateTax;
+    	}
+    	public static double getSocialSecurityTax()
+    	{
+        	return socialSecurityTax;
+    	}
+    	public static double getMedicareTax()
+    	{
+        	return medicareTax;
+    	}
+    	public static double getTotalTax()
+    	{
+        	return totalTax;
+    	}
+    	public static double getNetPay()
+    	{
+        	return netPay;
+    	}
+    	public static void lineSeparator()
+    	{
+        	for (int i = 0; i < 2; i++)
+        	{
+            		for (int k = 0; k < 5; k++)
+            		{
+                		System.out.printf("%s", "~~");
+            		}
+           		 System.out.println();
+        	}
+    	}
+    	public static void getPayInformation()
+    	{
 
-    public static double getHours()
-    {
-        return hours;
-    }
-    public static double getGrossPay()
-    {
-        return grossPay;
-    }
-    public static double getFedTax()
-    {
-        return fedTax;
-    }
-    public static double getStateTax()
-    {
-        return stateTax;
-    }
-    public static double getSocialSecurityTax()
-    {
-        return socialSecurityTax;
-    }
-    public static double getMedicareTax()
-    {
-        return medicareTax;
-    }
-    public static double getTotalTax()
-    {
-        return totalTax;
-    }
-    public static double getNetPay()
-    {
-        return netPay;
-    }
-    public static void lineSeparator()
-    {
-        for (int i = 0; i < 2; i++)
-        {
-            for (int k = 0; k < 5; k++)
-            {
-                System.out.printf("%s", "~~");
-            }
-            System.out.println();
-        }
-    }
-    public static void getPayInformation()
-    {
+        	lineSeparator();
+	        System.out.println("Paycheck Information");
+        	lineSeparator();
 
+        	System.out.printf("Total Hours: %.2f", PayrollCalculator.getHours());
+        	System.out.printf("\nGross Pay: $%.2f", PayrollCalculator.getGrossPay());
+        	System.out.printf("\nNet Pay: $%.2f\n", PayrollCalculator.getNetPay());
+        	lineSeparator();
+        	System.out.println("Tax Withholding");
+        	lineSeparator();
+        	System.out.printf("Total Tax: $%.2f\n", PayrollCalculator.getTotalTax());
+        	System.out.printf("Federal Tax Withholding: $%.2f\n", PayrollCalculator.getFedTax());
+        	System.out.printf("Illinois Tax Withholding: $%.2f\n", PayrollCalculator.getStateTax());
+        	System.out.printf("Social Security Tax Withholding: $%.2f\n", PayrollCalculator.getSocialSecurityTax());
+        	System.out.printf("Medicare Tax Withholding: $%.2f\n", PayrollCalculator.getMedicareTax());
+    	}	
 
-        lineSeparator();
-        System.out.println("Paycheck Information");
-        lineSeparator();
+    	public static void main(String[] args)
+    	{
+        	Scanner userInput = new Scanner(System.in);
+        	double hours;
 
-        System.out.printf("Total Hours: %.2f", PayrollCalculator.getHours());
-        System.out.printf("\nGross Pay: $%.2f", PayrollCalculator.getGrossPay());
-        System.out.printf("\nNet Pay: $%.2f\n", PayrollCalculator.getNetPay());
-        lineSeparator();
-        System.out.println("Tax Withholding");
-        lineSeparator();
-        System.out.printf("Total Tax: $%.2f\n", PayrollCalculator.getTotalTax());
-        System.out.printf("Federal Tax Withholding: $%.2f\n", PayrollCalculator.getFedTax());
-        System.out.printf("Illinois Tax Withholding: $%.2f\n", PayrollCalculator.getStateTax());
-        System.out.printf("Social Security Tax Withholding: $%.2f\n", PayrollCalculator.getSocialSecurityTax());
-        System.out.printf("Medicare Tax Withholding: $%.2f\n", PayrollCalculator.getMedicareTax());
-    }
+        	System.out.print("Enter hours worked: ");
 
-    public static void main(String[] args)
-    {
-        Scanner userInput = new Scanner(System.in);
-        double hours;
+        	hours = userInput.nextDouble();
 
-        System.out.print("Enter hours worked: ");
+        	while (hours < 0)
+        	{
+            		System.out.print("Hours can not be less than zero");
+            		System.out.print("\nTry again: ");
 
-        hours = userInput.nextDouble();
-
-        while (hours < 0)
-        {
-            System.out.print("Hours can not be less than zero");
-            System.out.print("\nTry again: ");
-
-            hours = userInput.nextDouble();
-        }
-        if (hours == 0)
-        {
-            System.out.println("You did not work this week");
-        }
-        else
-        {
-            PayrollCalculator.setHours(hours);
-            PayrollCalculator.setGrossPay();
-            PayrollCalculator.setFedTax();
-            PayrollCalculator.setStateTax();
-            PayrollCalculator.setSocialSecurityTax();
-            PayrollCalculator.setMedicareTax();
-            PayrollCalculator.setTotalTax();
-            PayrollCalculator.setNetPay();
-        }
-        PayrollCalculator.getPayInformation();
-        userInput.close();
-    }
+            		hours = userInput.nextDouble();
+        	}
+        	if (hours == 0)
+        	{
+            		System.out.println("You did not work this pay schedule");
+        	}
+        	else
+        	{
+            		PayrollCalculator.setHours(hours);
+            		PayrollCalculator.setGrossPay();
+            		PayrollCalculator.setFedTax();
+            		PayrollCalculator.setStateTax();
+            		PayrollCalculator.setSocialSecurityTax();
+            		PayrollCalculator.setMedicareTax();
+            		PayrollCalculator.setTotalTax();
+          		PayrollCalculator.setNetPay();
+        	}
+        	PayrollCalculator.getPayInformation();
+        	userInput.close();
+    	}	
 }
