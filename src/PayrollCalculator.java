@@ -23,8 +23,7 @@ public class PayrollCalculator
 	        hours = hoursFromMain;
     	}
 
-	//My pay rate	
-    	final static double PAY_RATE = 9.25;
+    	private static double payRate;
    	private static double hours;
 	private static double grossPay;
    	private static double netPay;
@@ -34,6 +33,10 @@ public class PayrollCalculator
    	private static double medicareTax;
    	private static double totalTax;
 
+	public static void setPayRate(double payRateFromMain)
+	{
+		payRate = payRateFromMain;
+	}	
     	public static void setHours(double hoursFromMain)
     	{
         	hours = hoursFromMain;
@@ -43,7 +46,7 @@ public class PayrollCalculator
 		//Multiplying by hundred then dividng the rounded
 		//number product by 100 to get a number in the
 		//hundreths place
-        	grossPay = Math.round(hours * PAY_RATE * 100)/100.0;
+        	grossPay = Math.round(hours * payRate * 100)/100.0;
     	}
     	public static void setFedTax()
     	{
@@ -102,7 +105,10 @@ public class PayrollCalculator
     	{
         	netPay = (grossPay - totalTax);
     	}
-
+	public static double getPayRate()
+	{
+		return payRate;
+	}	
     	public static double getHours()
     	{
         	return hours;
@@ -169,11 +175,14 @@ public class PayrollCalculator
     	public static void main(String[] args)
     	{
         	Scanner userInput = new Scanner(System.in);
-        	double hours;
+        	double hours, payRate;
 
         	System.out.print("Enter hours worked: ");
 
         	hours = userInput.nextDouble();
+
+		System.out.print("Enter Pay Rate: ");
+		payRate = userInput.nextDouble();
 
         	while (hours < 0)
         	{
@@ -188,6 +197,7 @@ public class PayrollCalculator
         	}
         	else
         	{
+			PayrollCalculator.setPayRate(payRate);
             		PayrollCalculator.setHours(hours);
             		PayrollCalculator.setGrossPay();
             		PayrollCalculator.setFedTax();
