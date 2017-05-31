@@ -66,6 +66,10 @@ public class PayrollCalculator
 			//percentage from 10 percent to 15 percent
 			fedTax = Math.floor((grossPay - 208.00) * .15 * 100)/100.0;
         	}
+		else if (grossPay > 1529 && grossPay < 3925)
+		{
+				fedTax = Math.floor((grossPay - 744.04) * .25 * 100)/100.0;
+		}
    	 }	
     	public static void setStateTax()
     	{
