@@ -31,7 +31,6 @@ public class PayrollCalculator
    	private static double stateTax;
    	private static double socialSecurityTax;
    	private static double medicareTax;
-	B
    	private static double totalTax;
 
 	public static void setPayRate(double payRateFromMain)
@@ -43,7 +42,6 @@ public class PayrollCalculator
         	hours = hoursFromMain;
     	}
     	public static void setGrossPay()
-		B
     	{
 		//Multiplying by hundred then dividng the rounded
 		//number product by 100 to get a number in the
