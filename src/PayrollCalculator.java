@@ -31,6 +31,7 @@ public class PayrollCalculator
    	private static double stateTax;
    	private static double socialSecurityTax;
    	private static double medicareTax;
+	B
    	private static double totalTax;
 
 	public static void setPayRate(double payRateFromMain)
@@ -42,6 +43,7 @@ public class PayrollCalculator
         	hours = hoursFromMain;
     	}
     	public static void setGrossPay()
+		B
     	{
 		//Multiplying by hundred then dividng the rounded
 		//number product by 100 to get a number in the
@@ -64,7 +66,7 @@ public class PayrollCalculator
         	{
 			//Changed deduction from 35.50 to 205.46 and changed 
 			//percentage from 10 percent to 15 percent
-			fedTax = Math.floor((grossPay - 205.46) * .15 * 100)/100.0;
+			fedTax = Math.floor((grossPay - 208.00) * .15 * 100)/100.0;
         	}
    	 }	
     	public static void setStateTax()
